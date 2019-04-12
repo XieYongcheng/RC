@@ -6,6 +6,7 @@
 #include <boost/archive/text_iarchive.hpp>
 #include <boost/archive/text_oarchive.hpp> 
 #include <boost/serialization/string.hpp>
+#include <boost/serialization/access.hpp>
 #include <boost/serialization/vector.hpp>
 #include <boost/asio.hpp>
 #include <Windows.h>
@@ -19,7 +20,7 @@ using namespace boost::archive;
 typedef boost::shared_ptr<boost::asio::ip::tcp::socket> socket_ptr;
 
 void show(string s);
-void client_run();
+void server_run();
 void client_session(socket_ptr sock);
 string run(string cmd);
 int run(string cmd, string& result);

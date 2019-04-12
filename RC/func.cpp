@@ -11,12 +11,12 @@ void send(tcp::socket& s, string str) {
 	s.write_some(buffer(string() + temp[0] + temp[1] + temp[2] + temp[3] + str));
 }
 
-string get(tcp::socket & s) {
+boost::shared_ptr<string> get(tcp::socket & s) {
 	char temp[4];
 	s.read_some(buffer(temp));
 	int size = *reinterpret_cast<int*>(&temp);
-	string str(size + 1, '\0');
-	s.read_some(buffer(str));
+	boost::shared_ptr<string> str(new string(size, '\0'));
+	s.read_some(buffer(*str));
 	return str;
 }
 
@@ -25,7 +25,7 @@ void show(string s) {
 	MessageBox(NULL, s.c_str(), "", MB_OK);
 }
 
-void client_run() {
+void server_run() {
 	while (true) {
 		socket_ptr sock(new tcp::socket(service));
 		acc.accept(*sock);
@@ -36,8 +36,8 @@ void client_run() {
 void client_session(socket_ptr sock) {
 	try {
 		message m;
-		m.reload(get(*sock));
-		if (m.type == message::Type::message_)
+		m.reload(*get(*sock));
+		if (m.type == message::Type::message)
 			show(m.msg);
 		while (true) {
 			break;

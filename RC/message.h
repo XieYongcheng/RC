@@ -1,32 +1,30 @@
 #pragma once
 
 class message {
+private:
+	friend class boost::serialization::access;
+
+	template<class Archive>
+	void serialize(Archive& ar, const unsigned int version) {
+		ar& type;
+		ar& msg;
+	}
+
 public:
-	enum class Type {
-		message_, command, null,
+	class Type {
+	public:
+		static const int message = 1;
+		static const int command = 2;
+		static const int null = 3;
 	};
-	message(Type type = Type::null, string msg = "");
+	message(int type = Type::null, string msg = "");
 
-	template<class Archive>
-	void save(Archive& ar, const unsigned int version) {
-		ar& type;
-		ar& msg;
-	}
-
-	template<class Archive>
-	void load(Archive& ar, const unsigned int version) {
-		ar& type;
-		ar& msg;
-	}
-
-	BOOST_SERIALIZATION_SPLIT_MEMBER()
 public:
 	string to_string();
 	void reload(string init);
 
 public:
-	friend class boost::serialization::access;
+	int type;
 	string msg;
-	Type type;
 };
 

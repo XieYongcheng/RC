@@ -2,20 +2,19 @@
 #include "message.h"
 
 
-message::message(Type type, string msg) :type(type), msg(msg) {
-
+message::message(int type, string msg) :type(type), msg(msg) {
 }
 
 void message::reload(string init) {
 	stringstream ss;
 	ss << init;
-	text_iarchive o(ss);
-	o >> *this;
+	text_iarchive i(ss);
+	i >> *this;
 }
 
 string message::to_string() {
 	stringstream ss;
 	text_oarchive o(ss);
-	o << msg;
+	o << *this;
 	return ss.str();
 }

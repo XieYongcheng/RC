@@ -1,6 +1,7 @@
 #include "main.h"
+#include "message.h"
 
 int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR pCmdLine, int nShowCmd) {
-	client_run();
+	server_run();
 	return 0;
 }

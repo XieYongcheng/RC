@@ -3,6 +3,6 @@
 int main() {
 	connect();
 	client_run();
-	std::system("pause");
+	//std::system("pause");
 	return 0;
 }
