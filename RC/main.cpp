@@ -1,7 +1,7 @@
 #include "main.h"
 
-int WINAPI wWinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPWSTR pCmdLine, int nShowCmd) {
-	MessageBox(NULL, TEXT("³É¹¦"), TEXT(""), MB_OK);
-	run("start cmd");
+int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR pCmdLine, int nShowCmd) {
+	MessageBox(NULL, (run("echo oo") + "\n" + run("echo nn")).c_str(), "", MB_OK);
+
 	return 0;
 }
