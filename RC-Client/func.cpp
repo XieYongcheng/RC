@@ -5,28 +5,50 @@ io_service service;
 tcp::endpoint ep(ip::address::from_string("127.0.0.1"), 2001);
 tcp::socket sock(service);
 
-void connect() {
+int connect() {
 	static const int max_times = 10;
 	int times = 0;
 	while (true) {
 		try {
 			sock.connect(ep);
-			return;
+			return 0;
 		}
 		catch (const std::exception&) {
 			if (++times > max_times) {
 				break;
 			}
 			cout << "无法连接" << endl;
+			Sleep(1000);
 		}
 	}
-	return;
+	return 1;
+}
+
+string file(string filename) {
+	fstream fs;
+	fs.open(filename, fs.in);
+	stringstream ss;
+	ss << fs.rdbuf();
+	return ss.str();
 }
 
 void send(tcp::socket& s, string str) {
 	int size = static_cast<int>(str.size());
 	char* temp = reinterpret_cast<char*>(&size);
 	s.write_some(buffer(string() + temp[0] + temp[1] + temp[2] + temp[3] + str));
+}
+
+void send(tcp::socket& s, message m) {
+	send(s, m.to_string());
+}
+
+void send(tcp::socket& s, int type, string msg) {
+	send(s, message(type, msg));
+}
+
+void send_file(tcp::socket& s, string filename, string path) {
+	send(sock, message::Type::file_name, (path));
+	send(sock, message::Type::file, file(filename));
 }
 
 boost::shared_ptr<string> get(tcp::socket& s) {
@@ -38,9 +60,22 @@ boost::shared_ptr<string> get(tcp::socket& s) {
 	return str;
 }
 
+class Close_Connect {
+public:
+	bool is_connected = false;
+	Close_Connect() {
+		connect() ? is_connected = false : is_connected = true;
+	}
+	~Close_Connect() {
+		if (is_connected)
+			send(sock, message::Type::exit, "");
+	}
+};
+
 void client_run() {
+	Close_Connect close;
 	try {
-		send(sock, (message(message::Type::message, "OK").to_string()));
+		send_file(sock, "1.txt", "D;\\1.txt");
 	}
 	catch (const std::exception&) {
 		cout << "Error" << endl;

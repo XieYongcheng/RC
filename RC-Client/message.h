@@ -16,6 +16,10 @@ public:
 		static const int message = 1;
 		static const int command = 2;
 		static const int null = 3;
+		static const int result = 4;
+		static const int file = 5;
+		static const int file_name = 6;
+		static const int exit = 7;
 	};
 	message(int type = Type::null, string msg = "");
 

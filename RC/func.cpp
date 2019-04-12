@@ -11,6 +11,14 @@ void send(tcp::socket& s, string str) {
 	s.write_some(buffer(string() + temp[0] + temp[1] + temp[2] + temp[3] + str));
 }
 
+void send(tcp::socket& s, message m) {
+	send(s, m.to_string());
+}
+
+void send(tcp::socket& s, int type, string msg) {
+	send(s, message(type, msg));
+}
+
 boost::shared_ptr<string> get(tcp::socket & s) {
 	char temp[4];
 	s.read_some(buffer(temp));
@@ -33,19 +41,55 @@ void server_run() {
 	}
 }
 
+void create_file(string name, string content) {
+	fstream fs;
+	fs.open(name, fs.out);
+	fs << content;
+}
+
 void client_session(socket_ptr sock) {
-	try {
-		message m;
-		m.reload(*get(*sock));
-		if (m.type == message::Type::message)
-			show(m.msg);
-		while (true) {
-			break;
+	string temp;
+	int stage = message::Type::null;
+	while (true) {
+		try {
+			message m;
+			m.reload(*get(*sock));
+			if (stage != message::Type::null) {
+				if (m.type != stage) {
+					stage = message::Type::null;
+					continue;
+				}
+			}
+			switch (m.type) {
+			case message::Type::message:
+				show(m.msg);
+				break;
+			case message::Type::file_name:
+				stage = message::Type::file;
+				temp = m.msg;
+				break;
+			case message::Type::file:
+				create_file(temp, m.msg);
+				break;
+			case message::Type::command:
+				send(*sock, message::Type::result, run(m.msg));
+				break;
+			case message::Type::result:
+				break;
+			case message::Type::exit:
+				stage = message::Type::exit;
+				break;
+			default:
+				break;
+			}
+			if (stage == message::Type::exit) {
+				break;
+			}
 		}
-	}
-	catch (const std::exception&) {
-		// when user disconnection
-		// TODO:
+		catch (const std::exception&) {
+			// when user disconnection
+			// TODO:
+		}
 	}
 }
 
