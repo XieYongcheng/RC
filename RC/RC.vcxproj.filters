@@ -13,6 +13,9 @@
       <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
       <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
     </Filter>
+    <Filter Include="sysinfo">
+      <UniqueIdentifier>{ba31415b-d906-4f55-beb1-0876f776677e}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -24,8 +27,14 @@
     <ClCompile Include="message.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
+    <ClCompile Include="def.cpp">
+      <Filter>sysinfo</Filter>
+    </ClCompile>
+    <ClCompile Include="sysinfo.cpp">
+      <Filter>sysinfo</Filter>
+    </ClCompile>
     <ClCompile Include="SystemInfo.cpp">
-      <Filter>源文件</Filter>
+      <Filter>sysinfo</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -35,8 +44,8 @@
     <ClInclude Include="message.h">
       <Filter>头文件</Filter>
     </ClInclude>
-    <ClInclude Include="SystemInfo.h">
-      <Filter>头文件</Filter>
+    <ClInclude Include="def.h">
+      <Filter>sysinfo</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

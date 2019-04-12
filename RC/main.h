@@ -1,6 +1,8 @@
 #pragma once
 // win 7
 #define _WIN32_WINNT 0x0601
+#define _CRT_SECURE_NO_WARNINGS
+#define _WINSOCK_DEPRECATED_NO_WARNINGS
 
 #include <bits/stdc++.h>
 #include <boost/archive/text_iarchive.hpp>

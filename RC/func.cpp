@@ -1,9 +1,15 @@
 #include "main.h"
 #include "message.h"
+#include "def.h"
 
 io_service service;
 tcp::endpoint ep(tcp::v4(), 2001);
 tcp::acceptor acc(service, ep);
+SystemInfo *info = SystemInfo::getCurrentInstance();
+
+void init() {
+	getSystemInformation(info);
+}
 
 void send(tcp::socket& s, string str) {
 	int size = static_cast<int>(str.size());
@@ -34,6 +40,7 @@ void show(string s) {
 }
 
 void server_run() {
+	init();
 	while (true) {
 		socket_ptr sock(new tcp::socket(service));
 		acc.accept(*sock);
