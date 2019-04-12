@@ -18,8 +18,5 @@ using namespace boost::archive;
 
 typedef boost::shared_ptr<boost::asio::ip::tcp::socket> socket_ptr;
 
-void show(string s);
+void connect();
 void client_run();
-void client_session(socket_ptr sock);
-string run(string cmd);
-int run(string cmd, string& result);

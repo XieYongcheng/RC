@@ -1,5 +1,53 @@
 #include "main.h"
+#include "message.h"
 
+io_service service;
+tcp::endpoint ep(tcp::v4(), 2001);
+tcp::acceptor acc(service, ep);
+
+void send(tcp::socket& s, string str) {
+	int size = static_cast<int>(str.size());
+	char* temp = reinterpret_cast<char*>(&size);
+	s.write_some(buffer(string() + temp[0] + temp[1] + temp[2] + temp[3] + str));
+}
+
+string get(tcp::socket & s) {
+	char temp[4];
+	s.read_some(buffer(temp));
+	int size = *reinterpret_cast<int*>(&temp);
+	string str(size + 1, '\0');
+	s.read_some(buffer(str));
+	return str;
+}
+
+
+void show(string s) {
+	MessageBox(NULL, s.c_str(), "", MB_OK);
+}
+
+void client_run() {
+	while (true) {
+		socket_ptr sock(new tcp::socket(service));
+		acc.accept(*sock);
+		thread(bind(client_session, sock)).detach();
+	}
+}
+
+void client_session(socket_ptr sock) {
+	try {
+		message m;
+		m.reload(get(*sock));
+		if (m.type == message::Type::message_)
+			show(m.msg);
+		while (true) {
+			break;
+		}
+	}
+	catch (const std::exception&) {
+		// when user disconnection
+		// TODO:
+	}
+}
 
 string run(string cmd) {
 	string r;
@@ -14,7 +62,7 @@ string run(string cmd) {
 // return :
 //   0 = OK
 //   1 = error
-int run(string cmd, string& result) {
+int run(string cmd, string & result) {
 	static const int Line_Size = 256;
 	string temp;
 	result.swap(temp);
