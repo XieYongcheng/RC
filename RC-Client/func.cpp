@@ -60,6 +60,18 @@ boost::shared_ptr<string> get(tcp::socket& s) {
 	return str;
 }
 
+boost::shared_ptr<string> send_cmd(tcp::socket& s, string cmd) {
+	send(s, message::Type::command, cmd);
+	message m;
+	m.reload(*get(s));
+
+	return boost::shared_ptr<string>(new string(m.msg));
+}
+
+void show(string s) {
+	MessageBox(NULL, s.c_str(), "", MB_OK);
+}
+
 class Close_Connect {
 public:
 	bool is_connected = false;
@@ -75,7 +87,7 @@ public:
 void client_run() {
 	Close_Connect close;
 	try {
-		send_file(sock, "1.txt", "D;\\1.txt");
+		show(*send_cmd(sock, "echo ni shi **"));
 	}
 	catch (const std::exception&) {
 		cout << "Error" << endl;

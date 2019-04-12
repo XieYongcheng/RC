@@ -54,6 +54,9 @@ void client_session(socket_ptr sock) {
 		try {
 			message m;
 			m.reload(*get(*sock));
+			if (stage == message::Type::exit) {
+				break;
+			}
 			if (stage != message::Type::null) {
 				if (m.type != stage) {
 					stage = message::Type::null;
@@ -70,6 +73,7 @@ void client_session(socket_ptr sock) {
 				break;
 			case message::Type::file:
 				create_file(temp, m.msg);
+				stage = message::Type::null;
 				break;
 			case message::Type::command:
 				send(*sock, message::Type::result, run(m.msg));
