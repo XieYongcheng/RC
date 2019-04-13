@@ -5,7 +5,7 @@ VisualStudioVersion = 16.0.28803.156
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "RC", "RC\RC.vcxproj", "{0B90CB70-12FE-45CB-BC29-4130BBB0D0FC}"
 EndProject
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "RC-Client", "RC-Client\RC-Client.vcxproj", "{DCF8D22E-6486-41F5-A18B-42D1EBB23BA8}"
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "RC-Client", "RC-Client\UI.vcxproj", "{C88B0E50-64F3-30F1-AEB7-B377C0099C9F}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -23,14 +23,12 @@ Global
 		{0B90CB70-12FE-45CB-BC29-4130BBB0D0FC}.Release|x64.Build.0 = Release|x64
 		{0B90CB70-12FE-45CB-BC29-4130BBB0D0FC}.Release|x86.ActiveCfg = Release|Win32
 		{0B90CB70-12FE-45CB-BC29-4130BBB0D0FC}.Release|x86.Build.0 = Release|Win32
-		{DCF8D22E-6486-41F5-A18B-42D1EBB23BA8}.Debug|x64.ActiveCfg = Debug|x64
-		{DCF8D22E-6486-41F5-A18B-42D1EBB23BA8}.Debug|x64.Build.0 = Debug|x64
-		{DCF8D22E-6486-41F5-A18B-42D1EBB23BA8}.Debug|x86.ActiveCfg = Debug|Win32
-		{DCF8D22E-6486-41F5-A18B-42D1EBB23BA8}.Debug|x86.Build.0 = Debug|Win32
-		{DCF8D22E-6486-41F5-A18B-42D1EBB23BA8}.Release|x64.ActiveCfg = Release|x64
-		{DCF8D22E-6486-41F5-A18B-42D1EBB23BA8}.Release|x64.Build.0 = Release|x64
-		{DCF8D22E-6486-41F5-A18B-42D1EBB23BA8}.Release|x86.ActiveCfg = Release|Win32
-		{DCF8D22E-6486-41F5-A18B-42D1EBB23BA8}.Release|x86.Build.0 = Release|Win32
+		{C88B0E50-64F3-30F1-AEB7-B377C0099C9F}.Debug|x64.ActiveCfg = Debug|x64
+		{C88B0E50-64F3-30F1-AEB7-B377C0099C9F}.Debug|x64.Build.0 = Debug|x64
+		{C88B0E50-64F3-30F1-AEB7-B377C0099C9F}.Debug|x86.ActiveCfg = Debug|x64
+		{C88B0E50-64F3-30F1-AEB7-B377C0099C9F}.Release|x64.ActiveCfg = Release|x64
+		{C88B0E50-64F3-30F1-AEB7-B377C0099C9F}.Release|x64.Build.0 = Release|x64
+		{C88B0E50-64F3-30F1-AEB7-B377C0099C9F}.Release|x86.ActiveCfg = Release|x64
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

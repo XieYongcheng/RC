@@ -1,7 +1,10 @@
+#include "mainwindow.h"
+#include <QApplication>
 #include "main.h"
 
-int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR pCmdLine, int nShowCmd) {
-	client_run();
-	//std::system("pause");
-	return 0;
+int main(int argc, char *argv[]) {
+	QApplication a(argc, argv);
+	MainWindow w;
+	w.show();
+	return client_run([&] {return a.exec(); });
 }

@@ -8,6 +8,7 @@
 #include <boost/serialization/string.hpp>
 #include <boost/serialization/vector.hpp>
 #include <boost/asio.hpp>
+#include <boost/filesystem.hpp>
 #include <Windows.h>
 
 using namespace std;
@@ -18,5 +19,15 @@ using namespace boost::archive;
 
 typedef boost::shared_ptr<boost::asio::ip::tcp::socket> socket_ptr;
 
-int connect();
-void client_run();
+class Close_Connect {
+public:
+	bool is_connected = false;
+	Close_Connect() {}
+	~Close_Connect();
+	void connect(string ip);
+	void disconnect();
+};
+
+int client_run(function<int()>);
+void send_file(tcp::socket& s, string filename, string path);
+boost::shared_ptr<string> send_cmd(tcp::socket& s, string cmd);

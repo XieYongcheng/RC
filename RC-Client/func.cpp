@@ -2,24 +2,15 @@
 #include "message.h"
 
 io_service service;
-tcp::endpoint ep(ip::address::from_string("127.0.0.1"), 2001);
 tcp::socket sock(service);
 
-int connect() {
-	static const int max_times = 10;
-	int times = 0;
-	while (true) {
-		try {
-			sock.connect(ep);
-			return 0;
-		}
-		catch (const std::exception&) {
-			if (++times > max_times) {
-				break;
-			}
-			cout << "无法连接" << endl;
-			Sleep(1000);
-		}
+int connect(tcp::endpoint ep) {
+	try {
+		sock.connect(ep);
+		return 0;
+	}
+	catch (const std::exception&) {
+		//cout << "无法连接" << endl;
 	}
 	return 1;
 }
@@ -38,20 +29,20 @@ void send(tcp::socket& s, string str) {
 	s.write_some(buffer(string() + temp[0] + temp[1] + temp[2] + temp[3] + str));
 }
 
-void send(tcp::socket& s, message m) {
+void send(tcp::socket & s, message m) {
 	send(s, m.to_string());
 }
 
-void send(tcp::socket& s, int type, string msg) {
+void send(tcp::socket & s, int type, string msg) {
 	send(s, message(type, msg));
 }
 
-void send_file(tcp::socket& s, string filename, string path) {
-	send(sock, message::Type::file_name, (path));
-	send(sock, message::Type::file, file(filename));
+void send_file(tcp::socket & s, string filename, string path) {
+	send(s, message::Type::file_name, (path));
+	send(s, message::Type::file, file(filename));
 }
 
-boost::shared_ptr<string> get(tcp::socket& s) {
+boost::shared_ptr<string> get(tcp::socket & s) {
 	char temp[4];
 	s.read_some(buffer(temp));
 	int size = *reinterpret_cast<int*>(&temp);
@@ -60,7 +51,7 @@ boost::shared_ptr<string> get(tcp::socket& s) {
 	return str;
 }
 
-boost::shared_ptr<string> send_cmd(tcp::socket& s, string cmd) {
+boost::shared_ptr<string> send_cmd(tcp::socket & s, string cmd) {
 	send(s, message::Type::command, cmd);
 	message m;
 	m.reload(*get(s));
@@ -69,27 +60,38 @@ boost::shared_ptr<string> send_cmd(tcp::socket& s, string cmd) {
 }
 
 void show(string s) {
-	MessageBox(NULL, s.c_str(), "", MB_OK);
+	MessageBoxA(NULL, s.c_str(), "", MB_OK);
 }
 
-class Close_Connect {
-public:
-	bool is_connected = false;
-	Close_Connect() {
-		connect() ? is_connected = false : is_connected = true;
-	}
-	~Close_Connect() {
-		if (is_connected)
-			send(sock, message::Type::exit, "");
-	}
-};
-
-void client_run() {
-	Close_Connect close;
+int client_run(function<int()> func) {
 	try {
-		show(*send_cmd(sock, "echo ni shi **"));
+		return func();
 	}
 	catch (const std::exception&) {
 		cout << "Error" << endl;
+	}
+	return 0;
+}
+
+Close_Connect::~Close_Connect() {
+	if (is_connected) {
+		send(sock, message::Type::exit, "");
+		sock.close();
+		sock = tcp::socket(::service);
+		is_connected = false;
+	}
+}
+
+void Close_Connect::connect(string ip) {
+	tcp::endpoint ep(ip::address::from_string(ip), 2001);
+	::connect(ep) ? is_connected = false : is_connected = true;
+}
+
+void Close_Connect::disconnect() {
+	if (is_connected) {
+		send(sock, message::Type::exit, "");
+		sock.close();
+		sock = tcp::socket(::service);
+		is_connected = false;
 	}
 }
