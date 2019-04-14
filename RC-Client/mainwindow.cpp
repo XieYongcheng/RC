@@ -145,6 +145,6 @@ void MainWindow::on_cmdB_clicked() {
 	SendCmdDialog d(this);
 	d.exec();
 	std::string cmd = d.getCmd().toStdString();
-	QString r(xxx::send_cmd(cmd).c_str());
+	QString r(QString::fromLocal8Bit(xxx::send_cmd(cmd).c_str()));
 	QMessageBox::information(this, "返回信息", r);
 }
